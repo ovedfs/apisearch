@@ -1,0 +1,37 @@
+<section class="border rounded-xl m-8 p-4 flex justify-center items-center gap-2">
+  <input class="input-search border rounded outline-none p-2" type="search" placeholder="Buscar...">
+  <button class="btn-search bg-sky-600 text-white rounded p-2">Buscar</button>
+</section>
+
+<div class="product-list grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 border rounded-xl p-4"></div>
+
+<script>
+	const btnSearch = document.querySelector('.btn-search')
+  const inputSearch = document.querySelector('.input-search')
+  const productList = document.querySelector('.product-list')
+
+	btnSearch.addEventListener('click', async () => {
+    const text = inputSearch.value
+    const url = "https://dummyjson.com/products/search?q=" + text
+
+    const response = await fetch(url)
+    const data = await response.json()
+    console.log(data.products);
+
+    showProducts(data.products)
+  })
+
+  function showProducts(products) {
+    productList.innerHTML = ''
+
+    products.forEach(product => {
+      productList.innerHTML += `
+        <article class="bg-sky-100 p-4 border rounded-xl">
+          <img src="${product.thumbnail}" alt="" />
+          <h3>${product.title}</h3>
+          <p>${product.description}</p>
+        </article>
+      `
+    });
+  }
+</script>
